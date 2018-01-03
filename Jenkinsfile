@@ -2,38 +2,29 @@ node {
     def app
 
     stage('Clone repository') {
-        /* Let's make sure we have the repository cloned to our workspace */
-
         checkout scm
     }
 
-    stage('Build image') {
-        /* This builds the actual image; synonymous to
-         * docker build on the command line */
-
+    stage('Build container') {
         app = docker.build("atheryl/demo-nodejs")
     }
 
-    stage('Test image') {
-        /* Ideally, we would run a test framework against our image.
-         * For this example, we're using a Volkswagen-type approach ;-) */
-
+    stage('Test container') {
         app.inside {
             sh 'echo "Tests passed"'
         }
     }
 
-    stage('Push image') {
-        /* Finally, we'll push the image with two tags:
-         * First, the incremental build number from Jenkins
-         * Second, the 'latest' tag.
-         * Pushing multiple tags is cheap, as all the layers are reused. */
+    env.WORKSPACE = pwd()
+    def version = readFile "${env.WORKSPACE}/version.txt"
+    
+    stage('Push container') {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-            env.WORKSPACE = pwd()
-            def version = readFile "${env.WORKSPACE}/version.txt"
-            app.push("${env.BUILD_NUMBER}")
-            //app.push("v1.1.3")
             app.push(("v" + version).trim())
         }
+    }
+    
+    stage('Update Pods') {
+        sh '"/usr/local/bin/kubectl --kubeconfig=/root/.kube/config set image deployments/demo-nodejs demo-nodejs=docker.io/atheryl/demo-nodejs:" + version'
     }
 }
