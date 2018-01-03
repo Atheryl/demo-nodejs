@@ -33,7 +33,7 @@ node {
             def version = readFile "${env.WORKSPACE}/version.txt"
             app.push("${env.BUILD_NUMBER}")
             //app.push("v1.1.3")
-            app.push("v" + new File("${env.WORKSPACE}/version.txt").text)
+            app.push("v" + version)
         }
     }
 }
