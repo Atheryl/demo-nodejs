@@ -32,7 +32,7 @@ node {
             env.WORKSPACE = pwd()
             def version = readFile "${env.WORKSPACE}/version.txt"
             app.push("${env.BUILD_NUMBER}")
-            app.push(version)
+            app.push("v" + version)
         }
     }
 }
