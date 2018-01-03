@@ -11,7 +11,7 @@ node {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        app = docker.build("atheryl/demo-nodejs")
+        app = docker.build("docker.io/atheryl/demo-nodejs")
     }
 
     stage('Test image') {
