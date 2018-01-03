@@ -31,7 +31,7 @@ node {
         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
             env.WORKSPACE = pwd()
             def version = readFile "${env.WORKSPACE}/version.txt"
-            app.push("${env.BUILD_NUMBER}")
+           // app.push("${env.BUILD_NUMBER}")
             app.push("v" + version)
         }
     }
