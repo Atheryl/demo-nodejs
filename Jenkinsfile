@@ -25,7 +25,7 @@ node {
     }
     
     stage('Update Pods') {
-        def cmd = '/usr/local/bin/kubectl --kubeconfig=/root/.kube/config set image deployments/demo-nodejs demo-nodejs=docker.io/atheryl/demo-nodejs:' + version
+        def cmd = '/usr/local/bin/kubectl --kubeconfig=/root/.kube/config set image deployments/demo-nodejs demo-nodejs=docker.io/atheryl/demo-nodejs:v' + version
         sh cmd
     }
 }
