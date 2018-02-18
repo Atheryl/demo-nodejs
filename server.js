@@ -6,7 +6,7 @@ var fs = require('fs');
 var handleRequest = function(request, response) {
 	
 	
-	var logStream = fs.createWriteStream('/var/log/nodejs/log.txt', {'flags': 'a'});
+	var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
 	var path = url.parse(request.url).pathname;
 	var apiSampleRes = [
 		{
@@ -21,13 +21,18 @@ var handleRequest = function(request, response) {
 		}
 	];
 	if (path == "/apiSample") {
-		logStream.write('GET ' + path + Date.now());
+		logStream.write('GET' + '\t' + path + '\t' + Date.now() + '\n');
 		response.writeHead(200, {"Content-Type": "application/json"});
 		response.end(JSON.stringify(apiSampleRes));
 	}
+	else if (path == "/path") {
+		logStream.write('GET ' + '\t' + path + '\t' + Date.now() + '\n');
+		response.writeHead(200);
+		response.end(process.cwd());
+	}
 	
 	fs.readFile('version.txt', 'utf8', function (err, version) {
-		logStream.write('GET Example page' + Date.now());
+		logStream.write('GET' + '\t' + 'Example page' + '\t' + Date.now() + '\n');
 		fs.readFile('index.html', 'utf8', function (err, html) {
 	    	response.writeHead(200);
 	   		html = html.replace('NODE_NAME', os.hostname());
