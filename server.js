@@ -6,7 +6,7 @@ var fs = require('fs');
 var handleRequest = function(request, response) {
 	
 	
-	var logStream = fs.createWriteStream('log.txt', {'flags': 'a'});
+	var logStream = fs.createWriteStream('/log/log.txt', {'flags': 'a'});
 	var path = url.parse(request.url).pathname;
 	var apiSampleRes = [
 		{
